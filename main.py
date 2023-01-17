@@ -3,47 +3,65 @@ from email.message import EmailMessage
 import ssl
 import smtplib
 
-book = openpyxl.load_workbook('registru.xlsx', data_only=True)
+FILE_PATH = 'registru.xlsx'
 
-foaie = book.active
+SENDER = 'alexurluescu23@gmail.com'
 
-casute = foaie['A4':'D5']
 
-array = [] 
+def open_xlsx(path:str) -> openpyxl.load_workbook:
+    """ Function that opens a excel file from a deticated path"""
+    book = openpyxl.load_workbook(path, data_only=True)
+    return book
 
-for fila in casute:
-    array.append([celda.value for celda in fila])
 
-print(array)
+def get_table_data(xls_file:openpyxl.load_workbook) -> list:
+    """ Function that returns data from a sheet section """
+    data_array = []
+    active_sheet = xls_file.active
+    data_cells = active_sheet['A4':'D5']
+    for row in data_cells:
+        data_array.append([cell_data.value for cell_data in row])
 
-for lista in array:
-    print('a inceput')
-    nume = lista[0]
-    prenume = lista[1]
-    email = lista[3]
-    nota = str(lista[2])
-    print(f"Nume: {nume}")
-    print(f"Prenume: {prenume}")
-    print(f"Email: {email}")
-    print(f"Nota: {nota}")
+    return data_array
 
-    email_emisor = 'alexurluescu23@gmail.com'
-    email_parola = 'xecgxqiixecxaayw'
-    email_receptor = email
 
-    subiect = 'Nota fizica'
-    cuerpo = 'Buna ziua ' + nume + " " + prenume + ' ai luat nota ' + nota
+def send_emails(data: list, email_sender):
 
-    em = EmailMessage()
-    em['From'] = email_emisor
-    em['To'] = email_receptor
-    em['Subject'] = subiect
-    em.set_content(cuerpo)
+    for student in data:
+        student_firstname = student[0]
+        student_lastname = student[1]
+        student_email = student[3]
+        student_grade = str(student[2])
 
-    contexto = ssl.create_default_context()
+        email_subject = 'Nota examen Fizica'
+        email_body = 'Buna ziua ' + student_firstname + " " + student_lastname + ', ai luat nota ' + student_grade + "."
 
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=contexto) as smtp:
-        smtp.login(email_emisor, email_parola)
-        smtp.sendmail(email_emisor, email_receptor, em.as_string())
 
-    print('s-a terminat')
+        email_emisor = email_sender
+        email_parola = 'xecgxqiixecxaayw'
+        email_receptor = student_email
+
+
+        email = EmailMessage()
+        email['From'] = email_emisor
+        email['To'] = email_receptor
+        email['Subject'] = email_subject
+        email.set_content(email_body)
+
+        contexto = ssl.create_default_context()
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=contexto) as smtp:
+            smtp.login(email_emisor, email_parola)
+            smtp.sendmail(email_emisor, email_receptor, email.as_string())
+
+
+def main():
+    
+    book = open_xlsx(FILE_PATH)
+    data = get_table_data(book)
+    send_emails(data, SENDER)
+    
+
+if __name__ == "__main__":
+    main()
+
