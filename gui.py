@@ -3,64 +3,52 @@ from tkinter import filedialog
 
 root = Tk()
 
-root.title("Automation")
+root.title("Send students grades")
 
 root.resizable(0,0)
 
 root.geometry("500x500")
 
+list = []
+
+
 # --------------- Functions ---------------------------
 
-def getExcelFile():
+def file_select_btn_clb():
     root.filename = filedialog.askopenfilename(initialdir="/", title="Select a file", filetypes = (("Excel files", "*.xlsx"),("All files", "*.*")))
-    print(root.filename)
-    labelExcel.config(text=root.filename)
-    # return root.filename
-
-def getParameters():
-    valueCoordX = inputCoordX.get()
-    valueCoordY = inputCoordY.get()
-    valueEmail = inputEmail.get()
-    print(f"CoordX: {valueCoordX}, CoordY: {valueCoordY}, Email: {valueEmail}")
+    path_label.config(text=root.filename)
+    path = root.filename
+    print(path)
+    return path
 
 # -----------------------------------------------------------------
 
+
 # ------------------- GUI -------------------------------------------
 
-pathExcel = Label(root, text="Path")
-pathExcel.place(x=50, y=50)
+path_to_file = Label(root, text="Path")
+path_to_file.place(x=50, y=50)
 
-labelExcel = Label(root, text="")
-labelExcel.place(x=100, y=50)
+path_label = Label(root, text="")
+path_label.place(x=100, y=50)
 
-coordX = Label(root, text="Coordinate X")
-coordX.place(x=50, y=90)
+email_label = Label(root, text="Email")
+email_label.place(x=50, y=170)
 
-inputCoordX = Entry(root)
-inputCoordX.place(x=140, y=90)
-
-coordY = Label(root, text="Coordinate Y")
-coordY.place(x=50, y=120)
-
-inputCoordY = Entry(root)
-inputCoordY.place(x=140, y=120)
-
-emailLabel = Label(root, text="Email")
-emailLabel.place(x=50, y=170)
-
-inputEmail = Entry(root)
-inputEmail.place(x=90, y=170)
-inputEmail.config(width=35)
+input_email = Entry(root)
+input_email.place(x=90, y=170)
+input_email.config(width=35)
 
 # ------- buttons ----------------
 
-buton = Button(root, text="Get excel file", command=getExcelFile)
-buton.place(x=100, y=240)
+file_select_btn = Button(root, text="Select file", command=file_select_btn_clb)
+file_select_btn.place(x=100, y=240)
 
-butonCoord = Button(root, text="Get coordinates", command=getParameters)
+butonCoord = Button(root, text="Get coordinates", command=getData)
 butonCoord.place(x=200, y=240)
 
 # -------------------------------------------------------------------------------
-
+def main():
+    book = excel()
 
 root.mainloop()
