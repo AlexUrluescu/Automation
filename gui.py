@@ -15,9 +15,9 @@ root.geometry("500x500")
 
 # ------------------- conectare excel -------------------------
 
-book = openpyxl.load_workbook("registru.xlsx", data_only=True)
 
-hoja = book.sheetnames
+
+# hoja = book.sheetnames
 
 # --------------------------------------------------------
 
@@ -31,14 +31,28 @@ def file_select_btn_clb():
     return path
 
 
-def sheet_select_btn_clb():
-    valoare = combobox.get()
-    print(valoare)
+def parameters_selected_btn_clb():
+    sheet = combobox.get()
+    path = (path_label.cget("text"))
+    email = input_email.get()
+    password = input_password.get()
+    # print(sheet)
+    # print(path)
+    # print(email)
+    # print(password)
+    return path
 
 
-def getPath():
-    print (path_label.cget("text"))
+def open_xlsx(path):
+    book = openpyxl.load_workbook(path, data_only=True)
+    return book
 
+def main():
+    path = parameters_selected_btn_clb()
+    print(path)
+    book = open_xlsx(path)
+    print(book)
+    combobox.config(values=book.sheetnames)
 
 # -----------------------------------------------------------------
 
@@ -49,7 +63,15 @@ path_to_file = Label(root, text="Path")
 path_to_file.place(x=50, y=20)
 
 path_label = Label(root, text="")
-path_label.place(x=100, y=20)
+path_label.place(x=85, y=22)
+path_label.config(bg="gray", width=40)
+
+sheet_label = Label(root, text="Sheet")
+sheet_label.place(x=50, y=70)
+
+combobox = Combobox(root)
+combobox.place(x=90, y=70)
+
 
 email_label = Label(root, text="Email")
 email_label.place(x=50, y=170)
@@ -64,24 +86,20 @@ password_label.place(x=50, y=200)
 input_password = Entry(root)
 input_password.place(x=130, y=200)
 
-combobox = Combobox(root, value = hoja)
-combobox.place(x=50, y=50)
 
 # ------- buttons ----------------
 
 file_select_btn = Button(root, text="Select file", command=file_select_btn_clb)
-file_select_btn.place(x=100, y=240)
+file_select_btn.place(x=400, y=20)
 
-butonCoord = Button(root, text="Get coordinates")
-butonCoord.place(x=200, y=240)
-
-sheet_select = Button(root, text="Get value", command=sheet_select_btn_clb);
-sheet_select.place(x=50, y=100)
-
-butonTrimite = Button(root, text="Get the path", command=getPath)
-butonTrimite.place(x=50, y=300)
+parameters_selected = Button(root, text="Get the parameters", command=main)
+parameters_selected.place(x=50, y=300)
 
 # -------------------------------------------------------------------------------
 
-
 root.mainloop()
+
+
+
+if __name__ == "__main__":
+    main()
