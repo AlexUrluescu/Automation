@@ -36,6 +36,9 @@ def sheet_select_btn_clb():
     print(valoare)
 
 
+def getPath():
+    print (path_label.cget("text"))
+
 
 # -----------------------------------------------------------------
 
@@ -64,9 +67,6 @@ input_password.place(x=130, y=200)
 combobox = Combobox(root, value = hoja)
 combobox.place(x=50, y=50)
 
-# def getPath():
-#     print (path_label.cget("text"))
-
 # ------- buttons ----------------
 
 file_select_btn = Button(root, text="Select file", command=file_select_btn_clb)
@@ -78,8 +78,8 @@ butonCoord.place(x=200, y=240)
 sheet_select = Button(root, text="Get value", command=sheet_select_btn_clb);
 sheet_select.place(x=50, y=100)
 
-# butonTrimite = Button(root, text="Get the path", command=getPath)
-# butonTrimite.place(x=50, y=300)
+butonTrimite = Button(root, text="Get the path", command=getPath)
+butonTrimite.place(x=50, y=300)
 
 # -------------------------------------------------------------------------------
 
