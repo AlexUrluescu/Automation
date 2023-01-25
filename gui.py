@@ -66,15 +66,16 @@ def get_sheet():
     return sheet
 
 
-def get_table_data(book):
-    active_sheet = book.active # stocam in ative_sheet, sheet-ul activ
+def get_table_data(sheet):
+    data_array = []
+    active_sheet = str("<Worksheet '" + sheet + "'>") # stocam in ative_sheet, sheet-ul activ
     print(type(active_sheet)) # ne returneaza tipul
-    return active_sheet
-    # data_cells = active_sheet["A4":"D5"]
-    # for row in data_cells:
-    #     data_array.append([cell_data.value for cell_data in row])
+    # return active_sheet
+    data_cells = active_sheet[str("A4"):str("D5")]
+    for row in data_cells:
+        data_array.append([cell_data.value for cell_data in row])
 
-    # return data_array
+    return data_array
 
 
 def print_data(data):
@@ -88,10 +89,11 @@ def main():
     path = parameters_selected_btn_clb()
     book = open_xlsx(path)
     sheet = get_sheet()
+    print(f"Aici este sheet-ul: {sheet}")
     email = email_emisor()
     password = password_emisor()
-    data = get_table_data(book)
-    print_data(data)
+    data = get_table_data(sheet)
+    print_data(f"Aici este data: {data}")
     
 
 # -----------------------------------------------------------------
