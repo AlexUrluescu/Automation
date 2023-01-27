@@ -2,6 +2,9 @@ from tkinter import *
 from tkinter import filedialog
 from tkinter.ttk import Combobox
 import openpyxl
+from email.message import EmailMessage
+import ssl
+import smtplib
 
 # ----------------------------------------------------------
 
@@ -13,29 +16,21 @@ root.resizable(0,0)
 
 root.geometry("500x500")
 
-# ------------------- conectare excel -------------------------
-
-
-
-# hoja = book.sheetnames
-
 # --------------------------------------------------------
 
-# --------------- Functions ---------------------------
+# --------------- Functions ------------------------------
 
 def file_select_btn_clb():
     root.filename = filedialog.askopenfilename(initialdir="/", title="Select a file", filetypes = (("Excel files", "*.xlsx"),("All files", "*.*")))
     path_label.config(text=root.filename)
     path = root.filename
-    # print(path)
+
     return path
 
 
 def parameters_selected_btn_clb():
-    sheet = combobox.get()
     path = (path_label.cget("text"))
-    email = input_email.get()
-    password = input_password.get()
+
     return path
 
 
@@ -47,7 +42,7 @@ def load_sheets_clb():
 
 def open_xlsx(path):
     book = openpyxl.load_workbook(path, data_only=True)
-    # combobox.config(values=book.sheetnames)
+  
     return book
 
 
@@ -61,39 +56,86 @@ def password_emisor():
     return password
 
 
-def get_sheet():
+def get_sheet(book):
+    list_data = []
     sheet = combobox.get()
-    return sheet
+    book.active = book[sheet]
+    book_active = book.active
+    print(book_active.tables.items())
+    paramas_table = book_active.tables.items()
+    for data in paramas_table:
+        list_data.append(data[1])
+
+    list_data.append(book_active)
+    
+    return list_data
 
 
-def get_table_data(sheet):
+def get_table_data(sheet, range):
     data_array = []
-    active_sheet = str("<Worksheet '" + sheet + "'>") # stocam in ative_sheet, sheet-ul activ
-    print(type(active_sheet)) # ne returneaza tipul
-    # return active_sheet
-    data_cells = active_sheet[str("A4"):str("D5")]
+
+    active_sheet = sheet
+    print(active_sheet) 
+
+    data_cells = active_sheet[range]
     for row in data_cells:
         data_array.append([cell_data.value for cell_data in row])
-
+   
+    print(data_array)
     return data_array
 
 
-def print_data(data):
-    print(data)
+def send_emails(data, email, password):
+    print(f"from send_emails_data -> {data}")
+    print(email)
 
+    array_students = []
 
-def print_sheet(sheet):
-    print(sheet)
+    for student in data:
+        if(student[0] == None):
+            break
+
+        array_students.append(student)
+        
+    array_students.pop(0)
+    print(array_students)
+
+    for student in array_students:
+        student_firstName = student[0]
+        student_lastName = student[1]
+        student_grade = student[2]
+        student_email = student[3]
+
+        email_emisor = email
+        email_password = password
+        email_receptor = student_email
+
+        email_subject = 'Nota examen Fizica'
+        email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai luat nota ' + str(student_grade) + "."
+
+        em = EmailMessage()
+        em['From'] = email_emisor
+        em['To'] = email_receptor
+        em['Subject'] = email_subject
+        em.set_content(email_body)
+
+        contexto = ssl.create_default_context()
+
+        with smtplib.SMTP_SSL('smtp.gmail.com', 465, context=contexto) as smtp:
+            smtp.login(email_emisor, email_password)
+            smtp.sendmail(email_emisor, email_receptor, em.as_string())
+
+        print('s-a terminat')
+
 
 def main():
     path = parameters_selected_btn_clb()
     book = open_xlsx(path)
-    sheet = get_sheet()
-    print(f"Aici este sheet-ul: {sheet}")
+    range,sheet = get_sheet(book)
     email = email_emisor()
     password = password_emisor()
-    data = get_table_data(sheet)
-    print_data(f"Aici este data: {data}")
+    data = get_table_data(sheet, range)
+    send_emails(data, email, password)
     
 
 # -----------------------------------------------------------------
@@ -106,7 +148,7 @@ path_to_file.place(x=50, y=20)
 
 path_label = Label(root, text="")
 path_label.place(x=85, y=22)
-path_label.config(bg="gray", width=40)
+path_label.config(bg="black", width=40, fg="white")
 
 sheet_label = Label(root, text="Sheet")
 sheet_label.place(x=50, y=70)
@@ -144,7 +186,6 @@ parameters_selected.place(x=50, y=300)
 # -------------------------------------------------------------------------------
 
 root.mainloop()
-
 
 
 if __name__ == "__main__":
