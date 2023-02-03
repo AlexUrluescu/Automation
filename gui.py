@@ -192,7 +192,7 @@ password_label.place(x=50, y=200)
 input_password = Entry(root)
 input_password.place(x=130, y=200)
 
-details_author_label = Label(root, text="Maded by Alexandre Urluescu, contact: alexurluescu23@gmail.com")
+details_author_label = Label(root, text="Made by Alexandre Urluescu, contact: alexurluescu23@gmail.com")
 details_author_label.place(x=50, y=470)
 
 text_afisare = "Sunt un text";
