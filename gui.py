@@ -7,16 +7,17 @@ import ssl
 import smtplib
 
 # ----------------------------------------------------------
-
 root = Tk()
-
 root.title("Send students grades")
-
 root.resizable(0,0)
-
 root.geometry("500x500")
 
+drop_down_sheet_list = StringVar()
+drop_down_sheet_list.set("SheetName")
+
 # --------------------------------------------------------
+
+contor_students = 0
 
 # --------------- Functions ------------------------------
 
@@ -24,6 +25,7 @@ def file_select_btn_clb():
     root.filename = filedialog.askopenfilename(initialdir="/", title="Select a file", filetypes = (("Excel files", "*.xlsx"),("All files", "*.*")))
     path_label.config(text=root.filename)
     path = root.filename
+    combobox.configure(state=NORMAL)
 
     return path
 
@@ -34,15 +36,23 @@ def parameters_selected_btn_clb():
     return path
 
 
+def clear_widget(contor_students):
+    info_students = f"S-au incarcat: {contor_students} studenti"
+    info_students_data.delete(1.0, END)
+    info_students_data.insert(1.0, info_students)
+    info_students_data.configure(state=DISABLED)
+
+
 def load_sheets_clb():
-    path = parameters_selected_btn_clb();
+    path = parameters_selected_btn_clb()
     book = open_xlsx(path)
     combobox.config(values=book.sheetnames)
+    
 
 
 def open_xlsx(path):
     book = openpyxl.load_workbook(path, data_only=True)
-  
+    root.update()
     return book
 
 
@@ -58,7 +68,7 @@ def password_emisor():
 
 def get_sheet(book):
     list_data = []
-    sheet = combobox.get()
+    sheet = drop_down_sheet_list.get()
     book.active = book[sheet]
     book_active = book.active
     print(book_active.tables.items())
@@ -86,6 +96,9 @@ def get_table_data(sheet, range):
 
 
 def send_emails(data, email, password):
+
+    global contor_students
+
     print(f"from send_emails_data -> {data}")
     print(email)
 
@@ -101,6 +114,9 @@ def send_emails(data, email, password):
     print(array_students)
 
     for student in array_students:
+
+        contor_students = contor_students + 1
+
         student_firstName = student[0]
         student_lastName = student[1]
         student_grade = student[2]
@@ -126,6 +142,10 @@ def send_emails(data, email, password):
             smtp.sendmail(email_emisor, email_receptor, em.as_string())
 
         print('s-a terminat')
+
+    clear_widget(contor_students)
+    print(contor_students)
+    
 
 
 def main():
@@ -153,9 +173,10 @@ path_label.config(bg="black", width=40, fg="white")
 sheet_label = Label(root, text="Sheet")
 sheet_label.place(x=50, y=70)
 
-combobox = Combobox(root)
+combobox = Combobox(root, textvariable= drop_down_sheet_list, postcommand=load_sheets_clb)
 combobox.place(x=90, y=70)
-combobox.set("SheetName")
+combobox.configure(state=DISABLED)
+#combobox.set("SheetName")
 
 
 email_label = Label(root, text="Email")
@@ -171,17 +192,24 @@ password_label.place(x=50, y=200)
 input_password = Entry(root)
 input_password.place(x=130, y=200)
 
+details_author_label = Label(root, text="Maded by Alexandre Urluescu, contact: alexurluescu23@gmail.com")
+details_author_label.place(x=50, y=470)
+
+text_afisare = "Sunt un text";
+
+info_students_data = Text(root, width=50, height=5);
+info_students_data.insert(1.0, "")
+
+info_students_data.place(x=50, y=360)
 
 # ------- buttons ----------------
 
 file_select_btn = Button(root, text="Select file", command=file_select_btn_clb)
 file_select_btn.place(x=400, y=20)
 
-load_sheets = Button(root, text="Load Sheets", command=load_sheets_clb)
-load_sheets.place(x=250, y=65)
 
-parameters_selected = Button(root, text="Get the parameters", command=main)
-parameters_selected.place(x=50, y=300)
+parameters_selected = Button(root, text="Get students data", command=main)
+parameters_selected.place(x=50, y=270)
 
 # -------------------------------------------------------------------------------
 
