@@ -82,7 +82,9 @@ def get_sheet(book):
 
 
 def get_table_data(sheet, range):
+    global contor_students
     data_array = []
+    array_students = []
 
     active_sheet = sheet
     print(active_sheet) 
@@ -91,31 +93,31 @@ def get_table_data(sheet, range):
     for row in data_cells:
         data_array.append([cell_data.value for cell_data in row])
    
-    print(data_array)
-    return data_array
 
-
-def send_emails(data, email, password):
-
-    global contor_students
-
-    print(f"from send_emails_data -> {data}")
-    print(email)
-
-    array_students = []
-
-    for student in data:
+    for student in data_array:
         if(student[0] == None):
             break
 
         array_students.append(student)
-        
+
     array_students.pop(0)
+
     print(array_students)
 
-    for student in array_students:
+    
+    contor_students = len(array_students)
+    clear_widget(contor_students)
+    print(contor_students)
+    parameters_selected.configure(state=NORMAL)
+    return array_students
 
-        contor_students = contor_students + 1
+
+def send_emails(data, email, password):
+
+    print(f"from send_emails_data -> {data}")
+    print(email)
+
+    for student in data:
 
         student_firstName = student[0]
         student_lastName = student[1]
@@ -143,8 +145,16 @@ def send_emails(data, email, password):
 
         print('s-a terminat')
 
-    clear_widget(contor_students)
-    print(contor_students)
+
+def get_data_btn_clb():
+    path = parameters_selected_btn_clb()
+    book = open_xlsx(path)
+    range,sheet = get_sheet(book)
+    email = email_emisor()
+    print(email)
+    password = password_emisor()
+    print(password)
+    get_table_data(sheet, range)
     
 
 
@@ -208,8 +218,12 @@ file_select_btn = Button(root, text="Select file", command=file_select_btn_clb)
 file_select_btn.place(x=400, y=20)
 
 
-parameters_selected = Button(root, text="Get students data", command=main)
-parameters_selected.place(x=50, y=270)
+parameters_selected = Button(root, text="Send", width=15, command=main)
+parameters_selected.place(x=250, y=270)
+parameters_selected.configure(state=DISABLED)
+
+get_data_btn = Button(root, text="Get students data", command=get_data_btn_clb)
+get_data_btn.place(x=50, y=270)
 
 # -------------------------------------------------------------------------------
 
