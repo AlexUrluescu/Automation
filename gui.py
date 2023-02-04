@@ -145,6 +145,10 @@ def send_emails(data, email, password):
 
         print('s-a terminat')
 
+    clear_widget(contor_students)
+    print(contor_students)
+    
+
 
 def get_data_btn_clb():
     path = parameters_selected_btn_clb()
