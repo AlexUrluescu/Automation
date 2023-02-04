@@ -18,6 +18,8 @@ drop_down_sheet_list.set("SheetName")
 # --------------------------------------------------------
 
 contor_students = 0
+grades_var = IntVar()
+absente_var = IntVar()
 
 # --------------- Functions ------------------------------
 
@@ -121,15 +123,26 @@ def send_emails(data, email, password):
 
         student_firstName = student[0]
         student_lastName = student[1]
-        student_grade = student[2]
-        student_email = student[3]
+        student_email = student[2]
+        student_grade = student[3]
+        student_abs = student[4]
+        student_restanta = student[5]
 
         email_emisor = email
         email_password = password
         email_receptor = student_email
 
-        email_subject = 'Nota examen Fizica'
-        email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai luat nota ' + str(student_grade) + "."
+        if(grades_var.get() == 1 and absente_var.get() == 0):
+            email_subject = 'Nota examen Fizica'
+            email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai luat nota ' + str(student_grade) + "."
+
+        elif(absente_var.get() == 1 and grades_var.get() == 0):
+            email_subject = 'Numarul de absente la Fizica'
+            email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai in total ' + str(student_abs) + " absente."
+
+        elif(absente_var.get() == 1 and grades_var.get() == 1):
+            email_subject = 'Notele si absentele la Fizica'
+            email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai nota ' + str(student_grade) + ' si ai in total ' + str(student_abs) + " absente."
 
         em = EmailMessage()
         em['From'] = email_emisor
@@ -144,9 +157,6 @@ def send_emails(data, email, password):
             smtp.sendmail(email_emisor, email_receptor, em.as_string())
 
         print('s-a terminat')
-
-    clear_widget(contor_students)
-    print(contor_students)
     
 
 
@@ -170,6 +180,14 @@ def main():
     password = password_emisor()
     data = get_table_data(sheet, range)
     send_emails(data, email, password)
+
+
+def btn_verifica_clb():
+    if(grades_var.get() == 1):
+        print("Ai selectat Grades")
+    
+    if(absente_var.get() == 1):
+        print("Ai selectat Absente")
     
 
 # -----------------------------------------------------------------
@@ -223,11 +241,25 @@ file_select_btn.place(x=400, y=20)
 
 
 parameters_selected = Button(root, text="Send", width=15, command=main)
-parameters_selected.place(x=250, y=270)
+parameters_selected.place(x=250, y=300)
 parameters_selected.configure(state=DISABLED)
 
 get_data_btn = Button(root, text="Get students data", command=get_data_btn_clb)
-get_data_btn.place(x=50, y=270)
+get_data_btn.place(x=50, y=300)
+
+btn_verifica = Button(root, text="Verifica", command=btn_verifica_clb)
+btn_verifica.place(x=250, y=260)
+
+# ---------------------------------
+
+# --------- checkbuttons -----------------------
+
+grades_checkbutton = Checkbutton(root, text="Grades", variable=grades_var, onvalue=1, offvalue=0)
+grades_checkbutton.place(x=50, y=260)
+grades_checkbutton.select()
+
+absente_checkbutton = Checkbutton(root, text="Absente", variable=absente_var, onvalue=1, offvalue=0)
+absente_checkbutton.place(x=150, y=260)
 
 # -------------------------------------------------------------------------------
 
