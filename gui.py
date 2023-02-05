@@ -5,12 +5,13 @@ import openpyxl
 from email.message import EmailMessage
 import ssl
 import smtplib
+from tkinter import messagebox
 
 # ----------------------------------------------------------
 root = Tk()
 root.title("Send students grades")
 root.resizable(0,0)
-root.geometry("500x500")
+root.geometry("500x600")
 
 drop_down_sheet_list = StringVar()
 drop_down_sheet_list.set("SheetName")
@@ -20,6 +21,7 @@ drop_down_sheet_list.set("SheetName")
 contor_students = 0
 grades_var = IntVar()
 absente_var = IntVar()
+extra_text_var = IntVar()
 
 # --------------- Functions ------------------------------
 
@@ -134,15 +136,15 @@ def send_emails(data, email, password):
 
         if(grades_var.get() == 1 and absente_var.get() == 0):
             email_subject = 'Nota examen Fizica'
-            email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai luat nota ' + str(student_grade) + "."
+            email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai luat nota ' + str(student_grade) + "\n" + text_proba.get(1.0, END) + "."
 
         elif(absente_var.get() == 1 and grades_var.get() == 0):
             email_subject = 'Numarul de absente la Fizica'
-            email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai in total ' + str(student_abs) + " absente."
+            email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai in total ' + str(student_abs) + " absente. \n" + text_proba.get(1.0, END) + "."
 
         elif(absente_var.get() == 1 and grades_var.get() == 1):
             email_subject = 'Notele si absentele la Fizica'
-            email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai nota ' + str(student_grade) + ' si ai in total ' + str(student_abs) + " absente."
+            email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai nota ' + str(student_grade) + ' si ai in total ' + str(student_abs) + " absente. \n" + text_proba.get(1.0, END) + "."
 
         em = EmailMessage()
         em['From'] = email_emisor
@@ -169,7 +171,9 @@ def get_data_btn_clb():
     password = password_emisor()
     print(password)
     get_table_data(sheet, range)
-    
+
+    if(extra_text_var.get() == 1):
+        text_proba.place(x=50, y=460)
 
 
 def main():
@@ -182,14 +186,9 @@ def main():
     send_emails(data, email, password)
 
 
-def btn_verifica_clb():
-    if(grades_var.get() == 1):
-        print("Ai selectat Grades")
+def btn_info_clb():
+    messagebox.showinfo("Information", "How can I generate the email email password: https://www.youtube.com/watch?v=DDVpKvJXRz8&list=PLdkIA_6OrXkLsQFuORCmRnyAEhO4Niiux&index=1")
     
-    if(absente_var.get() == 1):
-        print("Ai selectat Absente")
-    
-
 # -----------------------------------------------------------------
 
 
@@ -225,14 +224,17 @@ input_password = Entry(root)
 input_password.place(x=130, y=200)
 
 details_author_label = Label(root, text="Made by Alexandre Urluescu, contact: alexurluescu23@gmail.com")
-details_author_label.place(x=50, y=470)
+details_author_label.place(x=50, y=570)
 
 text_afisare = "Sunt un text";
 
 info_students_data = Text(root, width=50, height=5);
 info_students_data.insert(1.0, "")
-
 info_students_data.place(x=50, y=360)
+
+text_proba = Text(root, width=50, height=5);
+text_proba.insert(1.0, "")
+# text_proba.place(x=50, y=460)
 
 # ------- buttons ----------------
 
@@ -247,8 +249,8 @@ parameters_selected.configure(state=DISABLED)
 get_data_btn = Button(root, text="Get students data", command=get_data_btn_clb)
 get_data_btn.place(x=50, y=300)
 
-btn_verifica = Button(root, text="Verifica", command=btn_verifica_clb)
-btn_verifica.place(x=250, y=260)
+btn_info = Button(root, text="Info", command=btn_info_clb)
+btn_info.place(x=300, y=200)
 
 # ---------------------------------
 
@@ -260,6 +262,9 @@ grades_checkbutton.select()
 
 absente_checkbutton = Checkbutton(root, text="Absente", variable=absente_var, onvalue=1, offvalue=0)
 absente_checkbutton.place(x=150, y=260)
+
+extraText_checkbutton = Checkbutton(root, text="Extra text", variable=extra_text_var, onvalue=1, offvalue=0)
+extraText_checkbutton.place(x=250, y=260)
 
 # -------------------------------------------------------------------------------
 
