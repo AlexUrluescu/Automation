@@ -8,12 +8,15 @@ import smtplib
 from tkinter import messagebox
 from tkinter import ttk
 import time
+import logging
+
+logging.basicConfig(level=logging.DEBUG, format="%(asctime)s %(levelname)s %(message)s", datefmt="%Y-%m-%d %H:%M:%S")
 
 # ----------------------------------------------------------
 root = Tk()
 root.title("Send students grades")
 root.resizable(0,0)
-root.geometry("500x650")
+root.geometry("600x650")
 
 drop_down_sheet_list = StringVar()
 drop_down_sheet_list.set("SheetName")
@@ -24,6 +27,7 @@ contor_students = 0
 grades_var = IntVar()
 absente_var = IntVar()
 extra_text_var = IntVar()
+restante_var = IntVar()
 
 # --------------- Functions ------------------------------
 
@@ -123,7 +127,7 @@ def get_table_data(sheet, range):
     return array_students
 
 
-def send_emails(data, email, password, subject):
+def send_emails(data, email, password, subject, room, date):
 
     print(f"from send_emails_data -> {data}")
 
@@ -160,6 +164,10 @@ def send_emails(data, email, password, subject):
             email_subject = 'Notele si absentele la ' + subject
             email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai nota ' + str(student_grade) + ' si ai in total ' + str(student_abs) + " absente. \n" + text_proba.get(1.0, END) + "."
 
+        elif(restante_var.get() == 1):
+            email_subject = "Informatii despre restanta la " + subject
+            email_body = "Buna ziua " + student_firstName + " " + student_lastName + ", ai restanta in data de " + date +" in clasa " + room + ".\n" + text_proba.get(1.0, END) + "."
+
         em = EmailMessage()
         em['From'] = email_emisor
         em['To'] = email_receptor
@@ -194,8 +202,18 @@ def get_data_btn_clb():
     print(password)
     get_table_data(sheet, range)
 
-    if(extra_text_var.get() == 1):
-        text_proba.place(x=50, y=440)
+    # if(extra_text_var.get() == 1):
+    #     text_proba.place(x=50, y=440)
+
+
+def get_room():
+    room = input_room.get()
+    return room
+
+
+def get_date():
+    date = input_date.get()
+    return date
 
 
 def main():
@@ -205,14 +223,43 @@ def main():
     email = email_emisor()
     password = password_emisor()
     subject = get_subject()
+    room = get_room()
+    date = get_date()
     data = get_table_data(sheet, range)
-    send_emails(data, email, password, subject)
+    send_emails(data, email, password, subject, room, date)
     
 
 def btn_info_clb():
     messagebox.showinfo("Information", "How can I generate the email email password: https://www.youtube.com/watch?v=DDVpKvJXRz8&list=PLdkIA_6OrXkLsQFuORCmRnyAEhO4Niiux&index=1")
+    logging.debug("Butonul info a fost apasat")
 
 
+def restante_callback():
+    if(restante_var.get() == 1):
+        input_room.config(state=NORMAL)
+        input_date.config(state=NORMAL)
+        absente_checkbutton.config(state=DISABLED)
+        grades_checkbutton.config(state=DISABLED)
+        grades_checkbutton.deselect()
+        
+        
+
+    if(restante_var.get() == 0):
+        input_room.config(state=DISABLED)
+        input_date.config(state=DISABLED)
+        absente_checkbutton.config(state=NORMAL)
+        grades_checkbutton.config(state=NORMAL)
+
+    logging.debug(f"{restante_var.get()}")
+    logging.debug(f"grades: {grades_var.get()}")
+
+
+def extraText_callback():
+    if(extra_text_var.get() == 1):
+        text_proba.place(x=50, y=440)
+
+    if(extra_text_var.get() == 0):
+        text_proba.place(x=1000, y=1000)
 # -----------------------------------------------------------------
 
 # ------------------- GUI -------------------------------------------
@@ -248,6 +295,22 @@ input_subject.place(x=340, y=70)
 
 details_author_label = Label(root, text="Made by Alexandre Urluescu, contact: alexurluescu23@gmail.com")
 details_author_label.place(x=70, y=620)
+
+# ---- entry for restante ---------
+
+input_room = Entry(root, state=DISABLED)
+input_room.place(x=450, y=210)
+
+input_date = Entry(root, state=DISABLED)
+input_date.place(x=450, y=240)
+
+# ------- label restante  ------------
+
+room_label = Label(root, text="Room")
+room_label.place(x=400, y=210)
+
+date_label = Label(root, text="Exam date")
+date_label.place(x=370, y=240)
 
 # ComboBox -----------------------------------------------------------------------------------
 combobox = Combobox(root, textvariable= drop_down_sheet_list, postcommand=load_sheets_clb)
@@ -289,8 +352,11 @@ grades_checkbutton.select()
 absente_checkbutton = Checkbutton(root, text="Absente", variable=absente_var, onvalue=1, offvalue=0)
 absente_checkbutton.place(x=150, y=230)
 
-extraText_checkbutton = Checkbutton(root, text="Extra text", variable=extra_text_var, onvalue=1, offvalue=0)
+extraText_checkbutton = Checkbutton(root, text="Extra text", variable=extra_text_var, onvalue=1, offvalue=0, command=extraText_callback)
 extraText_checkbutton.place(x=250, y=230)
+
+restante_checkbutton = Checkbutton(root, text="Restante", variable=restante_var, onvalue=1, offvalue=0, command=restante_callback)
+restante_checkbutton.place(x=400, y=300)
 
 # ----------------------------------------------------------------------------------------------
 
