@@ -183,7 +183,7 @@ def send_emails(data, email, password, subject, room, date):
     #progress bar dynamic increment ----------------------------------
 
         progress_bar['value'] += 100/range_progress
-        progress_bar_label.config(text= str(progress_bar['value'])+"%")
+        progress_bar_label.config(text= str(round(progress_bar['value'], 1))+"%")
         root.update_idletasks()
         time.sleep(1)
 
