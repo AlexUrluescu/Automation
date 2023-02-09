@@ -338,7 +338,7 @@ parameters_selected.configure(state=DISABLED)
 get_data_btn = Button(root, text="Get students data", command=get_data_btn_clb)
 get_data_btn.place(x=50, y=280)
 
-btn_info = Button(root, text="Info", command=btn_info_clb)
+btn_info = Button(root, text="Create password", command=btn_info_clb)
 btn_info.place(x=300, y=160)
 
 # ----------------------------------------------------------------------------------
