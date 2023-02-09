@@ -72,6 +72,11 @@ def password_emisor():
     return password
 
 
+def get_subject():
+    subject = input_subject.get().capitalize()
+    return subject
+
+
 def get_sheet(book):
     list_data = []
     sheet = drop_down_sheet_list.get()
@@ -118,7 +123,7 @@ def get_table_data(sheet, range):
     return array_students
 
 
-def send_emails(data, email, password):
+def send_emails(data, email, password, subject):
 
     print(f"from send_emails_data -> {data}")
 
@@ -144,15 +149,15 @@ def send_emails(data, email, password):
         email_receptor = student_email
 
         if(grades_var.get() == 1 and absente_var.get() == 0):
-            email_subject = 'Nota examen Fizica'
+            email_subject = 'Nota examen la ' + subject
             email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai luat nota ' + str(student_grade) + "\n" + text_proba.get(1.0, END) + "."
 
         elif(absente_var.get() == 1 and grades_var.get() == 0):
-            email_subject = 'Numarul de absente la Fizica'
+            email_subject = 'Numarul de absente la ' + subject
             email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai in total ' + str(student_abs) + " absente. \n" + text_proba.get(1.0, END) + "."
 
         elif(absente_var.get() == 1 and grades_var.get() == 1):
-            email_subject = 'Notele si absentele la Fizica'
+            email_subject = 'Notele si absentele la ' + subject
             email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai nota ' + str(student_grade) + ' si ai in total ' + str(student_abs) + " absente. \n" + text_proba.get(1.0, END) + "."
 
         em = EmailMessage()
@@ -199,8 +204,9 @@ def main():
     range,sheet = get_sheet(book)
     email = email_emisor()
     password = password_emisor()
+    subject = get_subject()
     data = get_table_data(sheet, range)
-    send_emails(data, email, password)
+    send_emails(data, email, password, subject)
     
 
 def btn_info_clb():
@@ -233,6 +239,12 @@ password_label.place(x=50, y=160)
 
 input_password = Entry(root)
 input_password.place(x=130, y=160)
+
+subject_label = Label(root, text="Subject")
+subject_label.place(x=280, y=70)
+
+input_subject = Entry(root)
+input_subject.place(x=340, y=70)
 
 details_author_label = Label(root, text="Made by Alexandre Urluescu, contact: alexurluescu23@gmail.com")
 details_author_label.place(x=70, y=620)
