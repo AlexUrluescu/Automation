@@ -29,6 +29,19 @@ absente_var = IntVar()
 extra_text_var = IntVar()
 restante_var = IntVar()
 
+array = []
+
+input_email = Entry(root)
+input_email.place(x=90, y=120)
+input_email.config(width=35)
+
+with open("email.txt", "r") as file_object:
+    email = file_object.read()
+    input_email.delete(0,END)
+    input_email.insert(0,email)
+    print(email)
+
+
 # --------------- Functions ------------------------------
 
 def file_select_btn_clb():
@@ -67,7 +80,7 @@ def open_xlsx(path):
 
 
 def email_emisor():
-    email = input_email.get()
+    email = input_email.get().strip()
     return email
 
 
@@ -147,6 +160,7 @@ def send_emails(data, email, password, subject, room, date):
         student_grade = student[3]
         student_abs = student[4]
         student_restanta = student[5]
+        print(type(student_grade))
 
         email_emisor = email
         email_password = password
@@ -164,9 +178,14 @@ def send_emails(data, email, password, subject, room, date):
             email_subject = 'Notele si absentele la ' + subject
             email_body = 'Buna ziua ' + student_firstName + " " + student_lastName + ', ai nota ' + str(student_grade) + ' si ai in total ' + str(student_abs) + " absente. \n" + text_proba.get(1.0, END) + "."
 
-        elif(restante_var.get() == 1):
-            email_subject = "Informatii despre restanta la " + subject
-            email_body = "Buna ziua " + student_firstName + " " + student_lastName + ", ai restanta in data de " + date +" in clasa " + room + ".\n" + text_proba.get(1.0, END) + "."
+        if(restante_var.get() == 1):
+            if(int(student_grade) < 5):
+                email_subject = "Informatii despre restanta la " + subject
+                email_body = "Buna ziua " + student_firstName + " " + student_lastName + ", ai restanta in data de " + date +" in clasa " + room + ".\n" + text_proba.get(1.0, END) + "."
+
+            if(int(student_grade) > 5):
+                email_subject = "Informatii despre restanta la " + subject
+                email_body = "Buna ziua " + student_firstName + " " + student_lastName + ", esti integralist, felicitari!.\n" + text_proba.get(1.0, END) + "."
 
         em = EmailMessage()
         em['From'] = email_emisor
@@ -196,6 +215,7 @@ def get_data_btn_clb():
     path = parameters_selected_btn_clb()
     book = open_xlsx(path)
     range,sheet = get_sheet(book)
+    fetchFileTxt()
     email = email_emisor()
     print(email)
     password = password_emisor()
@@ -216,7 +236,27 @@ def get_date():
     return date
 
 
+def fetchFileTxt():
+    vector = []
+
+    email = input_email.get()
+    vector.append(email)
+
+    # materie = input_subject.get()
+    # vector.append(materie)
+
+    file = open('email.txt', 'w') # ne conectam cu fisierul 'date.txt' si vrem sa scriem date in el, deci punem 'w' (write)
+  
+    # pentru fiecare valoare din vector vreau sa mi-l scrii in fisier
+    for i in vector:
+        file.write(str(i) + "\n")
+    
+
+    file.close() #inchidem conexiunea cu fisierul 'date.txt'
+
+
 def main():
+
     path = parameters_selected_btn_clb()
     book = open_xlsx(path)
     range,sheet = get_sheet(book)
@@ -277,9 +317,7 @@ sheet_label.place(x=50, y=70)
 email_label = Label(root, text="Email")
 email_label.place(x=50, y=120)
 
-input_email = Entry(root)
-input_email.place(x=90, y=120)
-input_email.config(width=35)
+
 
 password_label = Label(root, text="Password")
 password_label.place(x=50, y=160)
