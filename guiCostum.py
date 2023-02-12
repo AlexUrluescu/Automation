@@ -9,6 +9,12 @@ import openpyxl
 import time
 from tkinter import ttk
 import logging
+import customtkinter
+
+# customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
+
+# customtkinter.set_appearance_mode("dark")
+# customtkinter.set_appearance_mode("light")
 
 logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(time)s %(message)s")
 
@@ -30,6 +36,8 @@ restante_var = IntVar()
 numar = 0
 value = 0
 
+costumize_var = True
+
 # -------------- fecth email -----------------------------------------------
 
 date_frame = CTkFrame(root, height=70)
@@ -47,6 +55,53 @@ with open("email.txt", "r") as file_object:
 # ----------------------------------------------------------------------
 
 # ----- functii ---------------
+
+def costumize():
+    global costumize_var
+
+    if(costumize_var == True):
+        logging.debug("A intrat in true")
+
+        customtkinter.set_appearance_mode("light")
+        
+        mode_button.configure(text="Dark", fg_color="black", hover_color="black", text_color="white")
+        path_to_file.configure(text_color="black")
+        sheet_label.configure(text_color="black")
+        email_label.configure(text_color="black")
+        subject_label.configure(text_color="black")
+        grades_checkbutton.configure(text_color="black")
+        absente_checkbutton.configure(text_color="black")
+        extraText_checkbutton.configure(text_color="black")
+        restante_checkbutton.configure(text_color="black")
+        date_label.configure(text_color="black")
+        room_label.configure(text_color="black")
+        details_author_label.configure(text_color="black")
+        progress_bar_label.configure(text_color="black")
+
+        costumize_var = False
+    
+    else:
+        logging.debug("A intrat in false")
+
+        customtkinter.set_appearance_mode("dark")
+
+        mode_button.configure(text="Light", fg_color="white", hover_color="white", text_color="black")
+        path_to_file.configure(text_color="white")
+        sheet_label.configure(text_color="white")
+        email_label.configure(text_color="white")
+        subject_label.configure(text_color="white")
+        grades_checkbutton.configure(text_color="white")
+        absente_checkbutton.configure(text_color="white")
+        extraText_checkbutton.configure(text_color="white")
+        restante_checkbutton.configure(text_color="white")
+        date_label.configure(text_color="white")
+        room_label.configure(text_color="white")
+        details_author_label.configure(text_color="white")
+        progress_bar_label.configure(text_color="white")
+        
+        costumize_var = True
+
+        
 
 def fetchFileTxt():
     vector = []
@@ -339,6 +394,9 @@ path_label.grid(column=1, row=0, padx=10, pady=10)
 file_select_btn = CTkButton(path_frame, text="Select file",height=30, width=120, command=file_select_btn_clb, font=('Comic Sans MS', 15), text_color="white", corner_radius=15)
 file_select_btn.grid(column=2, row=0, padx=10, pady=10)
 
+mode_button = CTkButton(path_frame, text="Light", width=40, height=40, fg_color="white", hover_color="white", text_color="black", command=costumize)
+mode_button.grid(row=0, column=3, padx=10, pady=10)
+
 # ---------------------------------------------------------------------------------
 
 # ------------ Content Sheet Frame -------------------------------------------------------
@@ -395,13 +453,13 @@ restante_checkbutton.grid(row=0, column=3, padx=10, pady=30)
 
 # ------------- Content Restante_Frame--------------------------------------------
 
-room_label = CTkLabel(restante_frame, text="Room")
+room_label = CTkLabel(restante_frame, text="Room", font=('Comic Sans MS', 16), text_color="white")
 room_label.grid(row=0, column=0, padx=10, pady=10)
 
 input_room = CTkEntry(restante_frame, state=DISABLED)
 input_room.grid(row=0, column=1, padx=10, pady=10)
 
-date_label = CTkLabel(restante_frame, text="Exam date")
+date_label = CTkLabel(restante_frame, text="Exam date", font=('Comic Sans MS', 16), text_color="white")
 date_label.grid(row=0, column=2, padx=10, pady=10)
 
 input_date = CTkEntry(restante_frame, state=DISABLED)
