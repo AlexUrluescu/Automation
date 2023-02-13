@@ -198,6 +198,7 @@ def restante_callback():
         absente_checkbutton.configure(state=DISABLED)
         grades_checkbutton.configure(state=DISABLED)
         grades_checkbutton.deselect()
+        absente_checkbutton.deselect()
         
 
     if(restante_var.get() == 0):
