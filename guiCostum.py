@@ -10,6 +10,8 @@ import time
 from tkinter import ttk
 import logging
 import customtkinter
+import os
+import os.path
 
 # customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -46,15 +48,31 @@ date_frame.grid(row = 2, column=0, sticky="we")
 input_email = CTkEntry(date_frame, width=250, border_color="#C0C0C0")
 input_email.grid(column=1, row=0, padx=10, pady=30, sticky="w")
 
-with open("email.txt", "r") as file_object:
-    email = file_object.read()
-    input_email.delete(0,END)
-    input_email.insert(0,email)
-    logging.debug(email)
+PATH = "./fisier_email.txt"
+
+if(os.path.isfile(PATH) == False):
+    file = open("fisier_email.txt", "x")
+
+    logging.debug(f"S-a creat fisierul {PATH}")
+    
+
+file = open("fisier_email.txt", "r")
+email = file.read()
+input_email.delete(0,END)
+input_email.insert(0,email)
+
+logging.debug(f"S-a citit din fisierul {PATH}")
+
 
 # ----------------------------------------------------------------------
 
 # ----- functii ---------------
+def save_email(email):
+    file = open("fisier_email.txt", "w")
+    file.write(email)
+
+    logging.debug(f"S-a scris in fisierul {PATH}")
+
 
 def costumize():
     global costumize_var
@@ -355,6 +373,7 @@ def main():
     date = get_date()
     data = get_table_data(sheet, range)
     send_emails(data, email, password, subject, room, date)
+    save_email(email)
 
 # ---------- Frames --------------------------------------------------
 
