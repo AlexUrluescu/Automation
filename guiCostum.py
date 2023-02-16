@@ -12,6 +12,7 @@ import logging
 import customtkinter
 import os
 import os.path
+import webbrowser
 
 # customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -39,10 +40,11 @@ numar = 0
 value = 0
 
 costumize_var = True
+info_var = True
 
 # -------------- fecth email -----------------------------------------------
 
-date_frame = CTkFrame(root, height=70)
+date_frame = CTkFrame(root, height=60)
 date_frame.grid(row = 2, column=0, sticky="we")
 
 input_email = CTkEntry(date_frame, width=250, border_color="#C0C0C0")
@@ -361,6 +363,30 @@ def send_emails(data, email, password, subject, room, date):
 
         logging.debug('s-a terminat')
 
+
+
+def tutorial_button_info_clb():
+    webbrowser.open_new_tab("https://www.youtube.com/watch?v=DDVpKvJXRz8&list=PLdkIA_6OrXkLsQFuORCmRnyAEhO4Niiux&index=1")
+
+    logging.debug("link apasat")
+
+
+def button_info_clb():
+    global info_var
+
+    if(info_var):
+        frame_info.grid(row=0, column=1, padx=10, pady=10)
+        button_info.configure(text="Hide")
+
+        info_var = False
+    
+    else:
+        frame_info.place(x=2000, y=2000)
+        button_info.configure(text="Info password")
+
+        info_var = True   
+    
+
     
 def main():
     path = parameters_selected_btn_clb()
@@ -380,21 +406,21 @@ def main():
 path_frame = CTkFrame(root, height=70)
 path_frame.grid(row = 0, column = 0, sticky="we")
 
-sheet_frame = CTkFrame(root, height=70)
+sheet_frame = CTkFrame(root, height=60)
 sheet_frame.grid(row = 1, column=0, sticky="we")
 
-checkbuttons_frame = CTkFrame(root, height=70)
+checkbuttons_frame = CTkFrame(root, height=60)
 checkbuttons_frame.grid(row = 3, column=0, sticky="we")
 
 restante_frame = CTkFrame(root)
 
-buttons_frame = CTkFrame(root)
+buttons_frame = CTkFrame(root, fg_color="pink")
 buttons_frame.grid(row=5, column=0, sticky="we")
 
-textBox_Frame = CTkFrame(root)
+textBox_Frame = CTkFrame(root, fg_color="red")
 textBox_Frame.grid(row=6, column=0, sticky="we")
 
-progressBar_frame = CTkFrame(root, height=70)
+progressBar_frame = CTkFrame(root, height=60, fg_color="green")
 progressBar_frame.grid(row=7, column=0, sticky="we")
 
 contact_details_frame = CTkFrame(root, height=20)
@@ -457,17 +483,17 @@ input_subject.grid(row=2, column=1, padx=10, pady=10, sticky="w")
 # ---------- Content Checkbutton Frame ------------------------------------------
 
 grades_checkbutton = CTkCheckBox(checkbuttons_frame, text="Grades", variable=grades_var, onvalue=1, offvalue=0, font=('Comic Sans MS', 16), text_color="white")
-grades_checkbutton.grid(row=0, column=0, padx=10, pady=30)
+grades_checkbutton.grid(row=0, column=0, padx=10, pady=20)
 grades_checkbutton.select()
 
 absente_checkbutton = CTkCheckBox(checkbuttons_frame, text="Absente", variable=absente_var, onvalue=1, offvalue=0, font=('Comic Sans MS', 16), text_color="white")
-absente_checkbutton.grid(row=0, column=1, padx=10, pady=30)
+absente_checkbutton.grid(row=0, column=1, padx=10, pady=20)
 
 extraText_checkbutton = CTkCheckBox(checkbuttons_frame, text="Extra text", variable=extra_text_var, onvalue=1, offvalue=0, command=extraText_callback, font=('Comic Sans MS', 16), text_color="white")
-extraText_checkbutton.grid(row=0, column=2, padx=10, pady=30)
+extraText_checkbutton.grid(row=0, column=2, padx=10, pady=20)
 
 restante_checkbutton = CTkCheckBox(checkbuttons_frame, text="Restante", variable=restante_var, onvalue=1, offvalue=0, command=restante_callback, font=('Comic Sans MS', 16), text_color="white")
-restante_checkbutton.grid(row=0, column=3, padx=10, pady=30)
+restante_checkbutton.grid(row=0, column=3, padx=10, pady=20)
 
 # -------------------------------------------------------------------------------
 
@@ -496,6 +522,9 @@ parameters_selected = CTkButton(buttons_frame, text="Send", width=100, command=m
 parameters_selected.grid(row=0, column=1, padx=10, pady=10)
 parameters_selected.configure(state=DISABLED)
 
+button_info = CTkButton(buttons_frame, text="Info password", cursor = "hand2", font=('Comic Sans MS', 15), text_color="white", corner_radius=15, command=button_info_clb)
+button_info.place(x=430, y=10)
+
 # ------------------------------------------------------------------------------
 
 # --------------------- Content TextBox Frame ------------------------------------
@@ -504,11 +533,23 @@ info_students_data = CTkTextbox(textBox_Frame, height=70, width=350);
 info_students_data.insert(1.0, "")
 info_students_data.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
-text_proba = CTkTextbox(textBox_Frame, height=100, width=350);
+text_proba = CTkTextbox(textBox_Frame, height=100, width=350)
 text_proba.insert(1.0, "")
-info_students_data.grid(row=0, column=0, padx=10, pady=10, sticky="w")
+# info_students_data.grid(row=1, column=0, padx=10, pady=10, sticky="w")
+
+frame_info = CTkFrame(textBox_Frame, height=70, width=220, border_width=2, border_color="white")
+
+
+# ------- Content Frame Info ---------------------------
+
+label_info = CTkLabel(frame_info, text="Press the button to view the tutorial \n (0:33 - 3:00 min)", font=('Comic Sans MS', 13), text_color="white")
+label_info.grid(row=0, column=0, padx=10, pady=10)
+
+tutorial_button = CTkButton(frame_info, text="Tutorial", command=tutorial_button_info_clb)
+tutorial_button.grid(row=1, column=0, padx=5, pady=5)
 
 # ------------------------------------------------------------------------------
+
 
 # --------------------- Content progressBar Frame ------------------------------------
 
