@@ -42,6 +42,9 @@ value = 0
 costumize_var = True
 info_var = True
 
+PATH = "./fisier_email.txt"
+PATH_PASSWORD = "./password.txt"
+
 # -------------- fecth email -----------------------------------------------
 
 date_frame = CTkFrame(root, height=60)
@@ -50,20 +53,36 @@ date_frame.grid(row = 2, column=0, sticky="we")
 input_email = CTkEntry(date_frame, width=250, border_color="#C0C0C0")
 input_email.grid(column=1, row=0, padx=10, pady=30, sticky="w")
 
-PATH = "./fisier_email.txt"
+input_password = CTkEntry(date_frame, border_color="white")
+input_password.grid(column=3, row=0, padx=10, pady=10, sticky="w")
+
+# ------------- creare fisier_email.txt in caz ca nu exista --------------
 
 if(os.path.isfile(PATH) == False):
     file = open("fisier_email.txt", "x")
 
     logging.debug(f"S-a creat fisierul {PATH}")
     
-
+# ---- citire date din fisier_email.txt ---------
 file = open("fisier_email.txt", "r")
 email = file.read()
 input_email.delete(0,END)
 input_email.insert(0,email)
 
 logging.debug(f"S-a citit din fisierul {PATH}")
+
+# ------------- creare password.txt in caz ca nu exista --------------
+
+if(os.path.isfile(PATH_PASSWORD) == False):
+    file = open("password.txt", "x")
+
+    logging.debug(f"S-a creat fisierul {PATH_PASSWORD}")
+
+# ---- citire date din password.txt ---------
+file = open("password.txt", "r")
+password = file.read()
+input_password.delete(0,END)
+input_password.insert(0,password)
 
 
 # ----------------------------------------------------------------------
@@ -74,6 +93,13 @@ def save_email(email):
     file.write(email)
 
     logging.debug(f"S-a scris in fisierul {PATH}")
+
+
+def save_password(password):
+    file = open("password.txt", "w")
+    file.write(password)
+
+    logging.debug(f"S-a scris in fisierul {PATH_PASSWORD}")
 
 
 def costumize():
@@ -120,19 +146,6 @@ def costumize():
         progress_bar_label.configure(text_color="white")
         
         costumize_var = True
-
-        
-
-def fetchFileTxt():
-    vector = []
-    email = input_email.get()
-    vector.append(email)
-    file = open('email.txt', 'w') # ne conectam cu fisierul 'date.txt' si vrem sa scriem date in el, deci punem 'w' (write)
-    # pentru fiecare valoare din vector vreau sa mi-l scrii in fisier
-    for i in vector:
-        file.write(str(i) + "\n")
-    
-    file.close() #inchidem conexiunea cu fisierul 'date.txt'
 
 
 def file_select_btn_clb():
@@ -202,7 +215,6 @@ def load_sheets_clb():
 
 def extraText_callback():
     if(extra_text_var.get() == 1):
-# info_students_data.grid(row=0, column=0, padx=10, pady=10, sticky="w")
         text_proba.grid(row=1, column=0, padx=10, pady=10, sticky="w")
 
     if(extra_text_var.get() == 0):
@@ -272,7 +284,6 @@ def get_data_btn_clb():
     book = open_xlsx(path)
     range,sheet = get_sheet(book)
     logging.debug(f"Range {range}, Sheet {sheet}")
-    fetchFileTxt()
     email = email_emisor()
     logging.debug(email)
     password = password_emisor()
@@ -400,6 +411,7 @@ def main():
     data = get_table_data(sheet, range)
     send_emails(data, email, password, subject, room, date)
     save_email(email)
+    save_password(password)
 
 # ---------- Frames --------------------------------------------------
 
@@ -469,8 +481,7 @@ email_label.grid(column=0, row=0, padx=0, pady=30)
 password_label = CTkLabel(date_frame, text="Password", font=('Comic Sans MS', 18))
 password_label.grid(column=2, row=0, padx=10, pady=10)
 
-input_password = CTkEntry(date_frame, border_color="white")
-input_password.grid(column=3, row=0, padx=10, pady=10, sticky="w")
+
 
 subject_label = CTkLabel(date_frame, text="Subject", font=('Comic Sans MS', 18), text_color="white")
 subject_label.grid(row=2, column=0, padx=10, pady=10)
