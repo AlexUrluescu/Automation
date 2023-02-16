@@ -23,7 +23,7 @@ logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(time)s %(messa
 
 
 root = CTk()
-root.geometry("630x750")
+root.geometry("620x750")
 root.title("Send students grades")
 root.resizable(0,0)
 
@@ -123,6 +123,7 @@ def costumize():
         room_label.configure(text_color="black")
         details_author_label.configure(text_color="black")
         progress_bar_label.configure(text_color="black")
+        label_info.configure(text_color="black")
 
         costumize_var = False
     
@@ -144,6 +145,7 @@ def costumize():
         room_label.configure(text_color="white")
         details_author_label.configure(text_color="white")
         progress_bar_label.configure(text_color="white")
+        label_info.configure(text_color="white")
         
         costumize_var = True
 
@@ -386,7 +388,7 @@ def button_info_clb():
     global info_var
 
     if(info_var):
-        frame_info.grid(row=0, column=1, padx=10, pady=10)
+        frame_info.grid(row=0, column=1, pady=10)
         button_info.configure(text="Hide")
 
         info_var = False
@@ -426,13 +428,13 @@ checkbuttons_frame.grid(row = 3, column=0, sticky="we")
 
 restante_frame = CTkFrame(root)
 
-buttons_frame = CTkFrame(root, fg_color="pink")
+buttons_frame = CTkFrame(root)
 buttons_frame.grid(row=5, column=0, sticky="we")
 
-textBox_Frame = CTkFrame(root, fg_color="red")
+textBox_Frame = CTkFrame(root)
 textBox_Frame.grid(row=6, column=0, sticky="we")
 
-progressBar_frame = CTkFrame(root, height=60, fg_color="green")
+progressBar_frame = CTkFrame(root, height=60)
 progressBar_frame.grid(row=7, column=0, sticky="we")
 
 contact_details_frame = CTkFrame(root, height=20)
@@ -548,7 +550,7 @@ text_proba = CTkTextbox(textBox_Frame, height=100, width=350)
 text_proba.insert(1.0, "")
 # info_students_data.grid(row=1, column=0, padx=10, pady=10, sticky="w")
 
-frame_info = CTkFrame(textBox_Frame, height=70, width=220, border_width=2, border_color="white")
+frame_info = CTkFrame(textBox_Frame, height=70, border_width=2, border_color="white")
 
 
 # ------- Content Frame Info ---------------------------
