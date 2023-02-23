@@ -19,7 +19,7 @@ import webbrowser
 # customtkinter.set_appearance_mode("dark")
 # customtkinter.set_appearance_mode("light")
 
-logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(time)s %(message)s")
+logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(message)s")
 
 
 root = CTk()
@@ -35,6 +35,7 @@ grades_var = IntVar()
 absente_var = IntVar()
 extra_text_var = IntVar()
 restante_var = IntVar()
+remember_var = IntVar()
 
 numar = 0
 value = 0
@@ -84,22 +85,41 @@ password = file.read()
 input_password.delete(0,END)
 input_password.insert(0,password)
 
-
+logging.debug(f"S-a citit din fisierul {PATH_PASSWORD}")
 # ----------------------------------------------------------------------
+
+if(remember_var.get() == 0):
+    logging.debug("Este inactiv")
 
 # ----- functii ---------------
 def save_email(email):
-    file = open("fisier_email.txt", "w")
-    file.write(email)
+    if(remember_var.get() == 1):
+        file = open("fisier_email.txt", "w")
+        file.write(email)
 
-    logging.debug(f"S-a scris in fisierul {PATH}")
+        logging.debug(f"S-a scris in fisierul {PATH}")
+
+    if(remember_var.get() == 0):
+        file = open("fisier_email.txt", "w")
+        file.write("")
+    
+
+        logging.debug("Email-ul nu s-a salvat")
 
 
 def save_password(password):
-    file = open("password.txt", "w")
-    file.write(password)
+    if(remember_var.get() == 1):
+        file = open("password.txt", "w")
+        file.write(password)
 
-    logging.debug(f"S-a scris in fisierul {PATH_PASSWORD}")
+        logging.debug(f"S-a scris in fisierul {PATH_PASSWORD}")
+
+    if(remember_var.get() == 0):
+        # os.remove("password.txt")
+        file = open("password.txt", "w")
+        file.write("")
+    
+        logging.debug("Parola nu s-a salvat")
 
 
 def costumize():
@@ -244,6 +264,7 @@ def restante_callback():
 
 
 def clear_widget(contor_students):
+    info_students_data.configure(state=NORMAL)
     info_students = f"S-au incarcat: {contor_students} studenti"
     info_students_data.delete(1.0, END)
     info_students_data.insert(1.0, info_students)
@@ -479,17 +500,18 @@ sheets_btn.configure(state=DISABLED)
 email_label = CTkLabel(date_frame, text="Email", font=('Comic Sans MS', 18), text_color="white")
 email_label.grid(column=0, row=0, padx=0, pady=30)
 
-
 password_label = CTkLabel(date_frame, text="Password", font=('Comic Sans MS', 18))
 password_label.grid(column=2, row=0, padx=10, pady=10)
-
-
 
 subject_label = CTkLabel(date_frame, text="Subject", font=('Comic Sans MS', 18), text_color="white")
 subject_label.grid(row=2, column=0, padx=10, pady=10)
 
 input_subject = CTkEntry(date_frame)
 input_subject.grid(row=2, column=1, padx=10, pady=10, sticky="w")
+
+absente_checkbutton = CTkCheckBox(date_frame, text="Remember me", variable=remember_var, onvalue=1, offvalue=0, font=('Comic Sans MS', 14), text_color="white")
+absente_checkbutton.grid(row=1, column=2, columnspan=2)
+
 
 # ------------------------------------------------------------------------------
 
@@ -542,7 +564,7 @@ button_info.place(x=430, y=10)
 
 # --------------------- Content TextBox Frame ------------------------------------
 
-info_students_data = CTkTextbox(textBox_Frame, height=70, width=350);
+info_students_data = CTkTextbox(textBox_Frame, height=70, width=350, state = "disabled");
 info_students_data.insert(1.0, "")
 info_students_data.grid(row=0, column=0, padx=10, pady=10, sticky="w")
 
