@@ -144,6 +144,7 @@ def costumize():
         details_author_label.configure(text_color="black")
         progress_bar_label.configure(text_color="black")
         label_info.configure(text_color="black")
+        rememberMe_checkbutton.configure(text_color="black")
 
         costumize_var = False
     
@@ -166,7 +167,8 @@ def costumize():
         details_author_label.configure(text_color="white")
         progress_bar_label.configure(text_color="white")
         label_info.configure(text_color="white")
-        
+        rememberMe_checkbutton.configure(text_color="white")
+
         costumize_var = True
 
 
@@ -469,31 +471,31 @@ contact_details_frame.place(x=100, y=715)
 
 # ------------- Content Path Frame ------------------------------------------------
 
-path_to_file = CTkLabel(path_frame, text="Path", font=('Comic Sans MS', 18), text_color="white")
+path_to_file = CTkLabel(path_frame, text="Path", font=('Helvetica', 18), text_color="white")
 path_to_file.grid(column = 0, row = 0, padx=10, pady=10)
 
 path_label = CTkLabel(path_frame, text="", bg_color="black", width=340)
 path_label.grid(column=1, row=0, padx=10, pady=10)
 
 
-file_select_btn = CTkButton(path_frame, text="Select file",height=30, width=120, command=file_select_btn_clb, font=('Comic Sans MS', 15), text_color="white", corner_radius=15)
+file_select_btn = CTkButton(path_frame, text="Select file",height=30, width=120, command=file_select_btn_clb, font=('Helvetica', 15), text_color="white")
 file_select_btn.grid(column=2, row=0, padx=10, pady=10)
 
-mode_button = CTkButton(path_frame, text="Light", width=40, height=40, fg_color="white", hover_color="white", text_color="black", command=costumize)
+mode_button = CTkButton(path_frame, text="Light", width=40, height=40, fg_color="white", hover_color="white", text_color="black", font=('Helvetica', 15), command=costumize)
 mode_button.grid(row=0, column=3, padx=10, pady=10)
 
 # ---------------------------------------------------------------------------------
 
 # ------------ Content Sheet Frame -------------------------------------------------------
 
-sheet_label = CTkLabel(sheet_frame, text="Sheet", font=('Comic Sans MS', 18), text_color="white")
+sheet_label = CTkLabel(sheet_frame, text="Sheet", font=('Helvetica', 18), text_color="white")
 sheet_label.grid(column=0, row=0, padx=10, pady=10)
 
 combobox = CTkComboBox(sheet_frame, variable=drop_down_sheet_list)
 combobox.grid(column=1, row=0, padx=10, pady=10)
 combobox.configure(state=DISABLED)
 
-sheets_btn = CTkButton(sheet_frame, text="Load Sheets", command=load_sheets_clb, font=('Comic Sans MS', 15), text_color="white", corner_radius=15)
+sheets_btn = CTkButton(sheet_frame, text="Load Sheets", command=load_sheets_clb, font=('Helvetica', 15), text_color="white")
 sheets_btn.grid(row=0, column=2, padx=30, pady=10)
 sheets_btn.configure(state=DISABLED)
 
@@ -501,50 +503,50 @@ sheets_btn.configure(state=DISABLED)
 
 # ------------ Content Date Frame ----------------------------------------------
 
-email_label = CTkLabel(date_frame, text="Email", font=('Comic Sans MS', 18), text_color="white")
+email_label = CTkLabel(date_frame, text="Email", font=('Helvetica', 18), text_color="white")
 email_label.grid(column=0, row=0, padx=0, pady=30)
 
-password_label = CTkLabel(date_frame, text="Password", font=('Comic Sans MS', 18))
+password_label = CTkLabel(date_frame, text="Password", font=('Helvetica', 18))
 password_label.grid(column=2, row=0, padx=10, pady=10)
 
-subject_label = CTkLabel(date_frame, text="Subject", font=('Comic Sans MS', 18), text_color="white")
+subject_label = CTkLabel(date_frame, text="Subject", font=('Helvetica', 18), text_color="white")
 subject_label.grid(row=2, column=0, padx=10, pady=10)
 
 input_subject = CTkEntry(date_frame)
 input_subject.grid(row=2, column=1, padx=10, pady=10, sticky="w")
 
-absente_checkbutton = CTkCheckBox(date_frame, text="Remember me", variable=remember_var, onvalue=1, offvalue=0, font=('Comic Sans MS', 14), text_color="white")
-absente_checkbutton.grid(row=1, column=2, columnspan=2)
+rememberMe_checkbutton = CTkCheckBox(date_frame, text="Remember me", variable=remember_var, onvalue=1, offvalue=0, font=('Helvetica', 14), text_color="white")
+rememberMe_checkbutton.grid(row=1, column=2, columnspan=2)
 
 
 # ------------------------------------------------------------------------------
 
 # ---------- Content Checkbutton Frame ------------------------------------------
 
-grades_checkbutton = CTkCheckBox(checkbuttons_frame, text="Grades", variable=grades_var, onvalue=1, offvalue=0, font=('Comic Sans MS', 16), text_color="white")
+grades_checkbutton = CTkCheckBox(checkbuttons_frame, text="Grades", variable=grades_var, onvalue=1, offvalue=0, font=('Helvetica', 16), text_color="white")
 grades_checkbutton.grid(row=0, column=0, padx=10, pady=20)
 grades_checkbutton.select()
 
-absente_checkbutton = CTkCheckBox(checkbuttons_frame, text="Absente", variable=absente_var, onvalue=1, offvalue=0, font=('Comic Sans MS', 16), text_color="white")
+absente_checkbutton = CTkCheckBox(checkbuttons_frame, text="Absente", variable=absente_var, onvalue=1, offvalue=0, font=('Helvetica', 16), text_color="white")
 absente_checkbutton.grid(row=0, column=1, padx=10, pady=20)
 
-extraText_checkbutton = CTkCheckBox(checkbuttons_frame, text="Extra text", variable=extra_text_var, onvalue=1, offvalue=0, command=extraText_callback, font=('Comic Sans MS', 16), text_color="white")
+extraText_checkbutton = CTkCheckBox(checkbuttons_frame, text="Extra text", variable=extra_text_var, onvalue=1, offvalue=0, command=extraText_callback, font=('Helvetica', 16), text_color="white")
 extraText_checkbutton.grid(row=0, column=2, padx=10, pady=20)
 
-restante_checkbutton = CTkCheckBox(checkbuttons_frame, text="Restante", variable=restante_var, onvalue=1, offvalue=0, command=restante_callback, font=('Comic Sans MS', 16), text_color="white")
+restante_checkbutton = CTkCheckBox(checkbuttons_frame, text="Restante", variable=restante_var, onvalue=1, offvalue=0, command=restante_callback, font=('Helvetica', 16), text_color="white")
 restante_checkbutton.grid(row=0, column=3, padx=10, pady=20)
 
 # -------------------------------------------------------------------------------
 
 # ------------- Content Restante_Frame--------------------------------------------
 
-room_label = CTkLabel(restante_frame, text="Room", font=('Comic Sans MS', 16), text_color="white")
+room_label = CTkLabel(restante_frame, text="Room", font=('Helvetica', 16), text_color="white")
 room_label.grid(row=0, column=0, padx=10, pady=10)
 
 input_room = CTkEntry(restante_frame, state=DISABLED)
 input_room.grid(row=0, column=1, padx=10, pady=10)
 
-date_label = CTkLabel(restante_frame, text="Exam date", font=('Comic Sans MS', 16), text_color="white")
+date_label = CTkLabel(restante_frame, text="Exam date", font=('Helvetica', 16), text_color="white")
 date_label.grid(row=0, column=2, padx=10, pady=10)
 
 input_date = CTkEntry(restante_frame, state=DISABLED)
@@ -554,14 +556,14 @@ input_date.grid(row=0, column=3, padx=10, pady=10)
 
 # -------------------- Content Buttons Frame -------------------------------------
 
-get_data_btn = CTkButton(buttons_frame, text="Get students data", command=get_data_btn_clb, font=('Comic Sans MS', 15), text_color="white", corner_radius=15)
+get_data_btn = CTkButton(buttons_frame, text="Get students data", command=get_data_btn_clb, font=('Helvetica', 15), text_color="white")
 get_data_btn.grid(row=0, column=0, padx=10, pady=10)
 
-parameters_selected = CTkButton(buttons_frame, text="Send", width=100, command=main, font=('Comic Sans MS', 15), text_color="white", corner_radius=15)
+parameters_selected = CTkButton(buttons_frame, text="Send", width=100, command=main, font=('Helvetica', 15), text_color="white")
 parameters_selected.grid(row=0, column=1, padx=10, pady=10)
 parameters_selected.configure(state=DISABLED)
 
-button_info = CTkButton(buttons_frame, text="Info password", cursor = "hand2", font=('Comic Sans MS', 15), text_color="white", corner_radius=15, command=button_info_clb)
+button_info = CTkButton(buttons_frame, text="Info password", cursor = "hand2", font=('Helvetica', 15), text_color="white", command=button_info_clb)
 button_info.place(x=430, y=10)
 
 # ------------------------------------------------------------------------------
@@ -581,7 +583,7 @@ frame_info = CTkFrame(textBox_Frame, height=70, border_width=2, border_color="wh
 
 # ------- Content Frame Info ---------------------------
 
-label_info = CTkLabel(frame_info, text="Press the button to view the tutorial \n (0:33 - 3:00 min)", font=('Comic Sans MS', 13), text_color="white")
+label_info = CTkLabel(frame_info, text="Press the button to view the tutorial \n (0:33 - 3:00 min)", font=('Helvetica', 13), text_color="white")
 label_info.grid(row=0, column=0, padx=10, pady=10)
 
 tutorial_button = CTkButton(frame_info, text="Tutorial", command=tutorial_button_info_clb)
@@ -594,13 +596,13 @@ tutorial_button.grid(row=1, column=0, padx=5, pady=5)
 
 progress_bar = ttk.Progressbar(progressBar_frame, orient=HORIZONTAL, length=400, mode="determinate")
 
-progress_bar_label = CTkLabel(progressBar_frame, text='', font=('Comic Sans MS', 15), text_color="white")
+progress_bar_label = CTkLabel(progressBar_frame, text='', font=('Helvetica', 15), text_color="white")
 
 # ---------------------------------------------------------------------------------
 
 # ------------ Content Contact details Frame --------------------------------------------
 
-details_author_label = CTkLabel(contact_details_frame, text="Made by Alexandre Urluescu, contact: alexurluescu23@gmail.com", font=('Comic Sans MS', 15), text_color="white")
+details_author_label = CTkLabel(contact_details_frame, text="Made by Alexandre Urluescu, contact: alexurluescu23@gmail.com", font=('Helvetica', 15), text_color="white")
 details_author_label.pack()
 
 root.mainloop()
