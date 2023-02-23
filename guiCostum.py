@@ -455,11 +455,15 @@ buttons_frame.grid(row=5, column=0, sticky="we")
 textBox_Frame = CTkFrame(root)
 textBox_Frame.grid(row=6, column=0, sticky="we")
 
-progressBar_frame = CTkFrame(root, height=60)
+progressBar_frame = CTkFrame(root, height=75)
 progressBar_frame.grid(row=7, column=0, sticky="we")
 
-contact_details_frame = CTkFrame(root, height=20)
+block_frame = CTkFrame(root)
+block_frame.grid(row=8, column=0, sticky="we")
+
+contact_details_frame = CTkFrame(root)
 contact_details_frame.place(x=100, y=715)
+# contact_details_frame.pack()
 
 # ------------------------------------------------------------------------
 
