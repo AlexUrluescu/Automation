@@ -43,8 +43,8 @@ value = 0
 costumize_var = True
 info_var = True
 
-PATH = "./fisier_email.txt"
-PATH_PASSWORD = "./password.txt"
+PATH = "./.fisier_email.txt"
+PATH_PASSWORD = "./.password.txt"
 
 # -------------- fecth email -----------------------------------------------
 
@@ -60,30 +60,33 @@ input_password.grid(column=3, row=0, padx=10, pady=10, sticky="w")
 # ------------- creare fisier_email.txt in caz ca nu exista --------------
 
 if(os.path.isfile(PATH) == False):
-    file = open("fisier_email.txt", "x")
+    file = open(".fisier_email.txt", "x")
 
     logging.debug(f"S-a creat fisierul {PATH}")
     
 # ---- citire date din fisier_email.txt ---------
-file = open("fisier_email.txt", "r")
+file = open(".fisier_email.txt", "r")
 email = file.read()
 input_email.delete(0,END)
 input_email.insert(0,email)
+file.close()
 
 logging.debug(f"S-a citit din fisierul {PATH}")
 
 # ------------- creare password.txt in caz ca nu exista --------------
 
 if(os.path.isfile(PATH_PASSWORD) == False):
-    file = open("password.txt", "x")
+    file = open(".password.txt", "x")
 
     logging.debug(f"S-a creat fisierul {PATH_PASSWORD}")
 
 # ---- citire date din password.txt ---------
-file = open("password.txt", "r")
+file = open(".password.txt", "r")
 password = file.read()
 input_password.delete(0,END)
 input_password.insert(0,password)
+
+file.close()
 
 logging.debug(f"S-a citit din fisierul {PATH_PASSWORD}")
 # ----------------------------------------------------------------------
@@ -94,13 +97,13 @@ if(remember_var.get() == 0):
 # ----- functii ---------------
 def save_email(email):
     if(remember_var.get() == 1):
-        file = open("fisier_email.txt", "w")
+        file = open(".fisier_email.txt", "w")
         file.write(email)
 
         logging.debug(f"S-a scris in fisierul {PATH}")
 
     if(remember_var.get() == 0):
-        file = open("fisier_email.txt", "w")
+        file = open(".fisier_email.txt", "w")
         file.write("")
     
 
@@ -109,14 +112,14 @@ def save_email(email):
 
 def save_password(password):
     if(remember_var.get() == 1):
-        file = open("password.txt", "w")
+        file = open(".password.txt", "w")
         file.write(password)
 
         logging.debug(f"S-a scris in fisierul {PATH_PASSWORD}")
 
     if(remember_var.get() == 0):
         # os.remove("password.txt")
-        file = open("password.txt", "w")
+        file = open(".password.txt", "w")
         file.write("")
     
         logging.debug("Parola nu s-a salvat")
