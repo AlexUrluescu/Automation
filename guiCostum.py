@@ -43,8 +43,8 @@ value = 0
 costumize_var = True
 info_var = True
 
-PATH = "./.fisier_email.txt"
-PATH_PASSWORD = "./.password.txt"
+PATH = "./email_file.txt"
+PATH_PASSWORD = "./password_file.txt"
 
 # -------------- fecth email -----------------------------------------------
 
@@ -60,76 +60,76 @@ input_password.grid(column=3, row=0, padx=10, pady=10, sticky="w")
 # ------------- creare fisier_email.txt in caz ca nu exista --------------
 
 if(os.path.isfile(PATH) == False):
-    file = open(".fisier_email.txt", "x")
+    file = open("email_file.txt", "x")
 
-    logging.debug(f"S-a creat fisierul {PATH}")
+    logging.debug(f"Create {PATH}")
     
 # ---- citire date din fisier_email.txt ---------
-file = open(".fisier_email.txt", "r")
+file = open("email_file.txt", "r")
 email = file.read()
 input_email.delete(0,END)
 input_email.insert(0,email)
 file.close()
 
-logging.debug(f"S-a citit din fisierul {PATH}")
+logging.debug(f"Read {PATH}")
 
 # ------------- creare password.txt in caz ca nu exista --------------
 
 if(os.path.isfile(PATH_PASSWORD) == False):
-    file = open(".password.txt", "x")
+    file = open("password_file.txt", "x")
 
-    logging.debug(f"S-a creat fisierul {PATH_PASSWORD}")
+    logging.debug(f"Create {PATH_PASSWORD}")
 
 # ---- citire date din password.txt ---------
-file = open(".password.txt", "r")
+file = open("password_file.txt", "r")
 password = file.read()
 input_password.delete(0,END)
 input_password.insert(0,password)
 
 file.close()
 
-logging.debug(f"S-a citit din fisierul {PATH_PASSWORD}")
+logging.debug(f"Read {PATH_PASSWORD}")
 # ----------------------------------------------------------------------
 
 if(remember_var.get() == 0):
-    logging.debug("Este inactiv")
+    logging.debug("Is inactiv")
 
 # ----- functii ---------------
 def save_email(email):
     if(remember_var.get() == 1):
-        file = open(".fisier_email.txt", "w")
+        file = open("email_file.txt", "w")
         file.write(email)
 
-        logging.debug(f"S-a scris in fisierul {PATH}")
+        logging.debug(f"Writed in {PATH}")
 
     if(remember_var.get() == 0):
-        file = open(".fisier_email.txt", "w")
+        file = open("email_file.txt", "w")
         file.write("")
     
 
-        logging.debug("Email-ul nu s-a salvat")
+        logging.debug("The email was not saved")
 
 
 def save_password(password):
     if(remember_var.get() == 1):
-        file = open(".password.txt", "w")
+        file = open("password_file.txt", "w")
         file.write(password)
 
-        logging.debug(f"S-a scris in fisierul {PATH_PASSWORD}")
+        logging.debug(f"Writed in {PATH_PASSWORD}")
 
     if(remember_var.get() == 0):
         # os.remove("password.txt")
-        file = open(".password.txt", "w")
+        file = open("password_file.txt", "w")
         file.write("")
     
-        logging.debug("Parola nu s-a salvat")
+        logging.debug("The password was not saved")
 
 
 def costumize():
     global costumize_var
 
     if(costumize_var == True):
-        logging.debug("A intrat in true")
+        logging.debug("It's True")
 
         customtkinter.set_appearance_mode("light")
         
@@ -152,7 +152,7 @@ def costumize():
         costumize_var = False
     
     else:
-        logging.debug("A intrat in false")
+        logging.debug("It's False")
 
         customtkinter.set_appearance_mode("dark")
 
@@ -270,7 +270,7 @@ def restante_callback():
 
 def clear_widget(contor_students):
     info_students_data.configure(state=NORMAL)
-    info_students = f"S-au incarcat: {contor_students} studenti"
+    info_students = f"Found: {contor_students} students"
     info_students_data.delete(1.0, END)
     info_students_data.insert(1.0, info_students)
     info_students_data.configure(state=DISABLED)
@@ -425,7 +425,6 @@ def button_info_clb():
 
         info_var = True   
     
-
     
 def main():
     path = parameters_selected_btn_clb()
