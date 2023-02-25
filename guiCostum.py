@@ -13,6 +13,7 @@ import customtkinter
 import os
 import os.path
 import webbrowser
+import xlsxwriter
 
 # customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -123,6 +124,32 @@ def save_password(password:str):
         file.write("")
     
         logging.debug("The password was not saved")
+
+
+def template_btn_clb():
+
+    workbook = xlsxwriter.Workbook('Template.xlsx', {'constant_memory': False})
+    worksheet = workbook.add_worksheet()
+
+    data =[
+        ["Popescu", "Ionut", "popescuionut@gmail.com", 9, 2, "nu"],
+    ]
+
+    options = {
+        "data": data,
+        "columns":[{'header': 'FirstName'},
+                   {'header': 'LastName'},
+                   {'header': 'Email'},
+                   {'header': 'Grades'},
+                   {'header': 'Absente'},
+                   {'header': 'Restante'},]
+    }
+
+    worksheet.add_table('B3:G4', options)
+
+    workbook.close()
+
+    logging.debug("The template excel file was created")
 
 
 def costumize():
@@ -501,6 +528,10 @@ combobox.configure(state=DISABLED)
 sheets_btn = CTkButton(sheet_frame, text="Load Sheets", command=load_sheets_clb, font=('Helvetica', 15), text_color="white")
 sheets_btn.grid(row=0, column=2, padx=30, pady=10)
 sheets_btn.configure(state=DISABLED)
+
+template_btn = CTkButton(sheet_frame, text="Create Template", font=('Helvetica', 15), text_color="white", cursor = "hand2", command=template_btn_clb)
+template_btn.grid(row=0, column=3)
+
 
 # -----------------------------------------------------------------------------------
 
