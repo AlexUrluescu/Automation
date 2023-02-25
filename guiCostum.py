@@ -25,7 +25,7 @@ logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(message)s")
 
 root = CTk()
 root.geometry("620x750")
-root.title("Send students grades")
+root.title("Send students grades v1.0.0")
 root.resizable(0,0)
 
 drop_down_sheet_list = StringVar()
