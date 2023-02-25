@@ -95,7 +95,7 @@ if(remember_var.get() == 0):
     logging.debug("Is inactiv")
 
 # ----- functii ---------------
-def save_email(email):
+def save_email(email:str):
     if(remember_var.get() == 1):
         file = open("email_file.txt", "w")
         file.write(email)
@@ -110,7 +110,7 @@ def save_email(email):
         logging.debug("The email was not saved")
 
 
-def save_password(password):
+def save_password(password:str):
     if(remember_var.get() == 1):
         file = open("password_file.txt", "w")
         file.write(password)
@@ -192,7 +192,7 @@ def parameters_selected_btn_clb():
     return path
 
 
-def open_xlsx(path):
+def open_xlsx(path:str) -> openpyxl.load_workbook:
     book = openpyxl.load_workbook(path, data_only=True)
     root.update()
 
@@ -200,7 +200,7 @@ def open_xlsx(path):
     return book
 
 
-def get_sheet(book):
+def get_sheet(book:str) -> list:
     list_data = []
     sheet = drop_down_sheet_list.get()
     book.active = book[sheet]
@@ -215,17 +215,17 @@ def get_sheet(book):
     return list_data
 
 
-def email_emisor():
+def email_emisor() -> str:
     email = input_email.get().strip()
     return email
 
 
-def password_emisor():
+def password_emisor() -> str:
     password = input_password.get()
     return password
 
 
-def get_subject():
+def get_subject() -> str:
     subject = input_subject.get().capitalize()
     return subject
 
@@ -276,13 +276,14 @@ def clear_widget(contor_students):
     info_students_data.configure(state=DISABLED)
     
 
-def get_table_data(sheet, range):
+def get_table_data(sheet:object, range:str) -> list:
     global contor_students
     data_array = []
     array_students = []
 
     active_sheet = sheet
     logging.debug(active_sheet)
+    logging.debug(f"Aici este {range}")
 
     data_cells = active_sheet[range]
     for row in data_cells:
@@ -319,17 +320,17 @@ def get_data_btn_clb():
     get_table_data(sheet, range)
     
 
-def get_room():
+def get_room() -> str:
     room = input_room.get()
     return room
 
 
-def get_date():
+def get_date() -> str:
     date = input_date.get()
     return date
 
 
-def send_emails(data, email, password, subject, room, date):
+def send_emails(data:list, email:str, password:str, subject:str, room:str, date:str):
     global numar
     global value
 
@@ -400,7 +401,7 @@ def send_emails(data, email, password, subject, room, date):
 
         # --------------------------------------------------------------------
 
-        logging.debug('s-a terminat')
+        logging.debug(f'Sended to {student_firstName} {student_lastName}')
 
 
 
