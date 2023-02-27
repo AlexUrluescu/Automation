@@ -14,6 +14,7 @@ import os
 import os.path
 import webbrowser
 import xlsxwriter
+import darkdetect
 
 # customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -21,7 +22,6 @@ import xlsxwriter
 # customtkinter.set_appearance_mode("light")
 
 logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(message)s")
-
 
 root = CTk()
 root.geometry("620x750")
@@ -41,11 +41,20 @@ remember_var = IntVar()
 numar = 0
 value = 0
 
-costumize_var = True
 info_var = True
 
 PATH = "./email_file.txt"
 PATH_PASSWORD = "./password_file.txt"
+
+# -------- theme of the system for the callback costumize button --------------------
+
+logging.debug(darkdetect.theme()) # return "Light" or "Dark"
+
+if(darkdetect.isDark() == True):  # return True or False
+    costumize_var = True
+
+if(darkdetect.isDark() == False):
+    costumize_var = False
 
 # -------------- fecth email -----------------------------------------------
 
@@ -652,6 +661,51 @@ progress_bar_label = CTkLabel(progressBar_frame, text='', font=('Helvetica', 15)
 
 details_author_label = CTkLabel(contact_details_frame, text="Made by Alexandre Urluescu, contact: alexurluescu23@gmail.com", font=('Helvetica', 15), text_color="white")
 details_author_label.pack()
+
+
+# ----------- put on the app the mode of the user's system ------------------
+
+if(darkdetect.isDark() == True):
+        logging.debug("It is dark")
+        
+        customtkinter.set_appearance_mode("dark")
+
+        mode_button.configure(text="Light", fg_color="white", hover_color="white", text_color="black")
+        path_to_file.configure(text_color="white")
+        sheet_label.configure(text_color="white")
+        email_label.configure(text_color="white")
+        subject_label.configure(text_color="white")
+        grades_checkbutton.configure(text_color="white")
+        absente_checkbutton.configure(text_color="white")
+        extraText_checkbutton.configure(text_color="white")
+        restante_checkbutton.configure(text_color="white")
+        date_label.configure(text_color="white")
+        room_label.configure(text_color="white")
+        details_author_label.configure(text_color="white")
+        progress_bar_label.configure(text_color="white")
+        label_info.configure(text_color="white")
+        rememberMe_checkbutton.configure(text_color="white")
+
+if(darkdetect.isDark() == False):
+        logging.debug("It is light")
+
+        customtkinter.set_appearance_mode("light")
+        
+        mode_button.configure(text="Dark", fg_color="black", hover_color="black", text_color="white")
+        path_to_file.configure(text_color="black")
+        sheet_label.configure(text_color="black")
+        email_label.configure(text_color="black")
+        subject_label.configure(text_color="black")
+        grades_checkbutton.configure(text_color="black")
+        absente_checkbutton.configure(text_color="black")
+        extraText_checkbutton.configure(text_color="black")
+        restante_checkbutton.configure(text_color="black")
+        date_label.configure(text_color="black")
+        room_label.configure(text_color="black")
+        details_author_label.configure(text_color="black")
+        progress_bar_label.configure(text_color="black")
+        label_info.configure(text_color="black")
+        rememberMe_checkbutton.configure(text_color="black")
 
 root.mainloop()
 
