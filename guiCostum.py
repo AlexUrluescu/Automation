@@ -363,6 +363,15 @@ def send_emails(data:list, email:str, password:str, subject:str, room:str, date:
 
     logging.debug(f"from send_emails_data -> {data}")
 
+    if(email == "" or password == "" or subject == ""):
+        error_label.grid(row=0, column=2, padx=5)
+        logging.debug("The entries are not complete")
+
+        return
+    
+
+    error_label.place(x=2000, y=2000)
+
     # progress bar placement in the root ----------------
     progress_bar_label.pack(padx=10)
     progress_bar.pack(padx=10, pady=10) 
@@ -371,6 +380,8 @@ def send_emails(data:list, email:str, password:str, subject:str, room:str, date:
     range_progress = len(data) # variable for the dynamic increment
    
     # ------------------------------------------------------
+
+   
 
     for student in data:
 
@@ -596,6 +607,9 @@ get_data_btn.grid(row=0, column=0, padx=10, pady=10)
 parameters_selected = CTkButton(buttons_frame, text="Send", width=100, command=main, font=('Helvetica', 15), text_color="white")
 parameters_selected.grid(row=0, column=1, padx=10, pady=10)
 parameters_selected.configure(state=DISABLED)
+
+error_label = CTkLabel(buttons_frame, text="Complete all the \nentries, please!", text_color="red")
+# error_label.grid(row=0, column=2, padx=10)
 
 button_info = CTkButton(buttons_frame, text="Info password", cursor = "hand2", font=('Helvetica', 15), text_color="white", command=button_info_clb)
 button_info.place(x=430, y=10)
