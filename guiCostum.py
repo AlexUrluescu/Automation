@@ -504,7 +504,7 @@ contact_details_frame.place(x=100, y=715)
 path_to_file = CTkLabel(path_frame, text="Path", font=('Helvetica', 18), text_color="white")
 path_to_file.grid(column = 0, row = 0, padx=10, pady=10)
 
-path_label = CTkLabel(path_frame, text="", bg_color="black", width=340)
+path_label = CTkLabel(path_frame, text="", bg_color="black", width=340, text_color="white")
 path_label.grid(column=1, row=0, padx=10, pady=10)
 
 
