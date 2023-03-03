@@ -370,6 +370,8 @@ def send_emails(data:list, email:str, password:str, subject:str, room:str, date:
     global numar
     global value
 
+    progress_bar['value'] = 0
+
     logging.debug(f"from send_emails_data -> {data}")
 
     if(email == "" or password == "" or subject == ""):
