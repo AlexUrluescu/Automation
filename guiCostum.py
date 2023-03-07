@@ -25,7 +25,7 @@ logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(message)s")
 
 root = CTk()
 root.geometry("620x750")
-root.title("Send students grades v1.0.0")
+root.title("Send students grades v1.0.1")
 root.resizable(0,0)
 
 drop_down_sheet_list = StringVar()
@@ -565,7 +565,7 @@ email_label.grid(column=0, row=0, padx=0, pady=30)
 password_label = CTkLabel(date_frame, text="Password", font=('Helvetica', 18))
 password_label.grid(column=2, row=0, padx=10, pady=10)
 
-subject_label = CTkLabel(date_frame, text="Subject", font=('Helvetica', 18), text_color="white")
+subject_label = CTkLabel(date_frame, text="Class", font=('Helvetica', 18), text_color="white")
 subject_label.grid(row=2, column=0, padx=10, pady=10)
 
 input_subject = CTkEntry(date_frame)
