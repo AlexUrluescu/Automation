@@ -15,6 +15,7 @@ import os.path
 import webbrowser
 import xlsxwriter
 import darkdetect
+import sys
 
 # customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -25,7 +26,7 @@ logging.basicConfig(level=logging.DEBUG, format="%(levelname)s: %(message)s")
 
 root = CTk()
 root.geometry("620x750")
-root.title("Send students grades v1.0.1")
+root.title("Send students grades v1.0.2")
 root.resizable(0,0)
 
 drop_down_sheet_list = StringVar()
@@ -230,7 +231,7 @@ def parameters_selected_btn_clb():
 
 def open_xlsx(path:str) -> openpyxl.load_workbook:
     book = openpyxl.load_workbook(path, data_only=True)
-    root.update()
+    # root.update()
 
     logging.debug(book)
     return book
@@ -477,18 +478,21 @@ def button_info_clb():
     
     
 def main():
-    path = parameters_selected_btn_clb()
-    book = open_xlsx(path)
-    range,sheet = get_sheet(book)
-    email = email_emisor()
-    password = password_emisor()
-    subject = get_subject()
-    room = get_room()
-    date = get_date()
-    data = get_table_data(sheet, range)
-    send_emails(data, email, password, subject, room, date)
-    save_email(email)
-    save_password(password)
+    try:
+        path = parameters_selected_btn_clb()
+        book = open_xlsx(path)
+        range,sheet = get_sheet(book)
+        email = email_emisor()
+        password = password_emisor()
+        subject = get_subject()
+        room = get_room()
+        date = get_date()
+        data = get_table_data(sheet, range)
+        send_emails(data, email, password, subject, room, date)
+        save_email(email)
+        save_password(password)
+    
+    except: root.after(1000, root.destroy)
 
 # ---------- Frames --------------------------------------------------
 
